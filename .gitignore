@@ -53,3 +53,4 @@ tests/benchmark
 tests/src-evaluate
 *.log
 *.trs
+build/
