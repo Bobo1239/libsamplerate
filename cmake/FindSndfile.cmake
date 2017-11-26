@@ -2,7 +2,7 @@
 #  SNDFILE_FOUND
 #  SNDFILE_INCLUDE_DIR
 #  SNDFILE_LIBRARY
-# 
+#
 # Environment variables used:
 #  SNDFILE_ROOT
 
