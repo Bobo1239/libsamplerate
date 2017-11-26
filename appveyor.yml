@@ -17,6 +17,7 @@ matrix:
 
 build_script:
   - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
+  - bash -lc "pacman -S --needed --noconfirm mingw-w64-x86_64-fftw mingw-w64-x86_64-libsndfile"
   - mkdir build
   - cd build
   - cmake -G "%generator%" -DBUILD_SHARED_LIBS=%shared% ..
