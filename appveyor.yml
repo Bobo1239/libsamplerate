@@ -7,9 +7,9 @@ environment:
       shared: "OFF"
     - generator: "Visual Studio 15 2017"
       shared: "ON"
-    - generator: "MinGW Makefiles"
+    - generator: "MSYS Makefiles"
       shared: "OFF"
-    - generator: "MinGW Makefiles"
+    - generator: "MSYS Makefiles"
       shared: "ON"
 
 matrix:
