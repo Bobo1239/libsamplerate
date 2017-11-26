@@ -7,16 +7,16 @@
 */
 
 /* Name of package */
-#define PACKAGE "libsamplerate"
+#define PACKAGE "${PROJECT_NAME}"
 
 /* Version number of package */
-#define VERSION "0.1.9"
+#define VERSION "${PROJECT_VERSION}"
 
 /* Target processor clips on negative float to int conversion. */
-#define CPU_CLIPS_NEGATIVE 0
+#cmakedefine01 CPU_CLIPS_NEGATIVE
 
 /* Target processor clips on positive float to int conversion. */
-#define CPU_CLIPS_POSITIVE 0
+#cmakedefine01 CPU_CLIPS_POSITIVE
 
 /* Target processor is big endian. */
 #cmakedefine01 CPU_IS_BIG_ENDIAN

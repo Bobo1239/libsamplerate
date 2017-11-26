@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.1)
-project(libsamplerate LANGUAGES C)
+project(libsamplerate VERSION 0.1.9 LANGUAGES C)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+
+include(TestBigEndian)
+include(CheckFunctionExists)
+include(CheckIncludeFiles)
+include(CheckSymbolExists)
+include(CheckTypeSize)
+include(ClipMode)
 
 set(SAMPLERATE_SRC
 	${PROJECT_SOURCE_DIR}/src/samplerate.c
@@ -17,7 +24,6 @@ if(WIN32)
 	include_directories(Win32)
 endif()
 
-include(TestBigEndian)
 test_big_endian(CPU_IS_BIG_ENDIAN)
 if(CPU_IS_BIG_ENDIAN)
 	set(CPU_IS_LITTLE_ENDIAN 0)
@@ -25,7 +31,6 @@ else()
 	set(CPU_IS_LITTLE_ENDIAN 1)
 endif()
 
-include(CheckFunctionExists)
 check_function_exists(pow RESULT)
 if(NOT RESULT)
   list(APPEND CMAKE_REQUIRED_LIBRARIES m)
@@ -35,16 +40,16 @@ check_function_exists(lrint HAVE_LRINT)
 check_function_exists(lrintf HAVE_LRINTF)
 check_function_exists(signal HAVE_SIGNAL)
 
-include(CheckIncludeFiles)
 check_include_files(stdint.h HAVE_STDINT)
 check_include_files(sys/times.h HAVE_SYS_TIMES_H)
 
-include(CheckSymbolExists)
 check_symbol_exists(SIGALRM signal.h HAVE_SIGALRM)
 
-include(CheckTypeSize)
 check_type_size(int SIZEOF_INT)
 check_type_size(long SIZEOF_LONG)
+
+# This will set CPU_CLIPS_NEGATIVE and CPU_CLIPS_POSITIVE
+clip_mode()
 
 find_package(ALSA)
 set(HAVE_ALSA ${ALSA_FOUND})
@@ -54,8 +59,6 @@ set(HAVE_SNDFILE ${SNDFILE_FOUND})
 
 find_package(FFTW)
 set(HAVE_FFTW3 ${FFTW_FOUND})
-
-# TODO: check CPU_CLIPS stuff
 
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
