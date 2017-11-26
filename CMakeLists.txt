@@ -14,6 +14,7 @@ if(WIN32)
 	set(SAMPLERATE_SRC
 		${SAMPLERATE_SRC}
 		${PROJECT_SOURCE_DIR}/Win32/libsamplerate-0.def)
+	include_directories(Win32)
 endif()
 
 include(TestBigEndian)
@@ -99,6 +100,7 @@ foreach(exampleSrc ${EXAMPLE_SRCS})
 	if(SNDFILE_FOUND)
 		target_link_libraries(${exampleName} PUBLIC sndfile)
 	endif()
-	# TODO: need this on MinGW
-	# target_link_libraries(${exampleName} PUBLIC winmm)
+	if(WIN32)
+		target_link_libraries(${exampleName} PUBLIC winmm)
+	endif()
 endforeach(exampleSrc)
