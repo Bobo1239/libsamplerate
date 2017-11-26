@@ -44,6 +44,9 @@ check_type_size("long" SIZEOF_LONG)
 find_package(Sndfile)
 set(HAVE_SNDFILE SNDFILE_FOUND)
 
+find_package(FFTW)
+set(HAVE_FFTW3 FFTW_FOUND)
+
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 # FIXME: name must be libsamplerate-0 to create a dll
@@ -63,6 +66,10 @@ foreach(testSrc ${TEST_SRCS})
     	           ${testSrc}
     	           ${PROJECT_SOURCE_DIR}/tests/util.c
     	           ${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
+    target_link_libraries(${testName} PUBLIC samplerate m)
+    if (FFTW_FOUND)
+    	target_link_libraries(${testName} PUBLIC fftw3)
+    endif()
     target_link_libraries(${testName} PUBLIC samplerate m)
 	add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSrc)
