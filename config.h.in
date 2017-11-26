@@ -28,7 +28,7 @@
 #cmakedefine01 HAVE_ALARM
 
 /* Define to 1 if you have the <alsa/asoundlib.h> header file. */
-#cmakedefine01 HAVE_ALSA_ASOUNDLIB_H
+#cmakedefine01 HAVE_ALSA
 
 /* Set to 1 if you have libfftw3. */
 #cmakedefine01 HAVE_FFTW3
@@ -58,7 +58,7 @@
 #cmakedefine01 OS_IS_WIN32
 
 /* The size of `int', as computed by sizeof. */
-#cmakedefine01 SIZEOF_INT
+#define SIZEOF_INT ${SIZEOF_INT}
 
 /* The size of `long', as computed by sizeof. */
-#cmakedefine01 SIZEOF_LONG
+#define SIZEOF_LONG ${SIZEOF_LONG}

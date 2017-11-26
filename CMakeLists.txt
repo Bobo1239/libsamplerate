@@ -10,6 +10,7 @@ set(SAMPLERATE_SRC
 	${PROJECT_SOURCE_DIR}/src/src_zoh.c)
 
 if(WIN32)
+	set(OS_IS_WIN32 TRUE)
 	set(SAMPLERATE_SRC
 		${SAMPLERATE_SRC}
 		${PROJECT_SOURCE_DIR}/Win32/libsamplerate-0.def)
@@ -24,6 +25,10 @@ else()
 endif()
 
 include(CheckFunctionExists)
+check_function_exists(pow RESULT)
+if(NOT RESULT)
+  list(APPEND CMAKE_REQUIRED_LIBRARIES m)
+endif()
 check_function_exists(alarm HAVE_ALARM)
 check_function_exists(lrint HAVE_LRINT)
 check_function_exists(lrintf HAVE_LRINTF)
@@ -31,15 +36,14 @@ check_function_exists(signal HAVE_SIGNAL)
 
 include(CheckIncludeFiles)
 check_include_files(stdint.h HAVE_STDINT)
-check_include_files(sys/times.h HAVE_SYS_TIMES)
-check_include_files(alsa/asoundlib.h HAVE_ALSA_ASOUNDLIB)
+check_include_files(sys/times.h HAVE_SYS_TIMES_H)
 
 include(CheckSymbolExists)
 check_symbol_exists(SIGALRM signal.h HAVE_SIGALRM)
 
 include(CheckTypeSize)
-check_type_size("int" SIZEOF_INT)
-check_type_size("long" SIZEOF_LONG)
+check_type_size(int SIZEOF_INT)
+check_type_size(long SIZEOF_LONG)
 
 find_package(ALSA)
 set(HAVE_ALSA ALSA_FOUND)
@@ -71,8 +75,8 @@ foreach(testSrc ${TEST_SRCS})
 		${testSrc}
 		${PROJECT_SOURCE_DIR}/tests/util.c
 		${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
-	target_link_libraries(${testName} PUBLIC samplerate m)
-	if (FFTW_FOUND)
+	target_link_libraries(${testName} PUBLIC samplerate ${CMAKE_REQUIRED_LIBRARIES})
+	if(FFTW_FOUND)
 		target_link_libraries(${testName} PUBLIC fftw3)
 	endif()
 	add_test(NAME ${testName} COMMAND ${testName})
@@ -84,17 +88,17 @@ set(EXAMPLE_SRCS
 	${PROJECT_SOURCE_DIR}/examples/varispeed-play.c)
 
 foreach(exampleSrc ${EXAMPLE_SRCS})
-	get_filename_component(testName ${exampleSrc} NAME_WE)
-	add_executable(${testName}
+	get_filename_component(exampleName ${exampleSrc} NAME_WE)
+	add_executable(${exampleName}
 		${exampleSrc}
 		${PROJECT_SOURCE_DIR}/examples/audio_out.c)
-	target_link_libraries(${testName} PUBLIC samplerate)
-	if (ALSA_FOUND)
-		target_link_libraries(${testName} PUBLIC asound)
+	target_link_libraries(${exampleName} PUBLIC samplerate ${CMAKE_REQUIRED_LIBRARIES})
+	if(ALSA_FOUND)
+		target_link_libraries(${exampleName} PUBLIC asound)
 	endif()
-	if (SNDFILE_FOUND)
-		target_link_libraries(${testName} PUBLIC sndfile)
+	if(SNDFILE_FOUND)
+		target_link_libraries(${exampleName} PUBLIC sndfile)
 	endif()
 	# TODO: need this on MinGW
-	# target_link_libraries(${testName} PUBLIC winmm)
+	# target_link_libraries(${exampleName} PUBLIC winmm)
 endforeach(exampleSrc)
