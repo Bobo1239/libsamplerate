@@ -16,7 +16,7 @@ matrix:
   fast_finish: true
 
 build_script:
-  - export PATH=C:\\MinGW\\msys\\1.0\\bin;%PATH%
+  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
   - mkdir build
   - cd build
   - cmake -G "%generator%" -DBUILD_SHARED_LIBS=%shared% ..
