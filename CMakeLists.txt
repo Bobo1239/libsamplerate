@@ -46,13 +46,13 @@ check_type_size(int SIZEOF_INT)
 check_type_size(long SIZEOF_LONG)
 
 find_package(ALSA)
-set(HAVE_ALSA ALSA_FOUND)
+set(HAVE_ALSA ${ALSA_FOUND})
 
 find_package(Sndfile)
-set(HAVE_SNDFILE SNDFILE_FOUND)
+set(HAVE_SNDFILE ${SNDFILE_FOUND})
 
 find_package(FFTW)
-set(HAVE_FFTW3 FFTW_FOUND)
+set(HAVE_FFTW3 ${FFTW_FOUND})
 
 # TODO: check CPU_CLIPS stuff
 
