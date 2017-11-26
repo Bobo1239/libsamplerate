@@ -47,8 +47,8 @@ set(HAVE_SNDFILE SNDFILE_FOUND)
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 # FIXME: name must be libsamplerate-0 to create a dll
-add_library(libsamplerate STATIC ${SAMPLERATE_SRC})
+add_library(samplerate STATIC ${SAMPLERATE_SRC})
 
-target_include_directories(libsamplerate PUBLIC
+target_include_directories(samplerate PUBLIC
 	${PROJECT_SOURCE_DIR}/src
 	${CMAKE_CURRENT_BINARY_DIR})
