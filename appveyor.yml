@@ -21,3 +21,4 @@ build_script:
   - cmake -G "%generator%" -DBUILD_SHARED_LIBS=%shared% ..
   - cat config.h
   - cmake --build
+  - ctest -C "Debug"
