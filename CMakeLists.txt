@@ -62,8 +62,11 @@ set(HAVE_FFTW3 ${FFTW_FOUND})
 
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-# FIXME: name must be libsamplerate-0 to create a dll
 add_library(samplerate ${SAMPLERATE_SRC})
+
+if(BUILD_SHARED_LIBS AND MSVC)
+	set_target_properties(samplerate PROPERTIES OUTPUT_NAME "libsamplerate-0")
+endif()
 
 target_include_directories(samplerate PUBLIC
 	${PROJECT_SOURCE_DIR}/src
