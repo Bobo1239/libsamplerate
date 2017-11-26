@@ -10,16 +10,14 @@ before_install:
   - sudo apt-get install -y autoconf automake-1.15 pkg-config m4 libsndfile-dev libfftw3-dev libasound2-dev
 
 env:
-  - AUTOGEN=true SHARED=OFF SHARED=ON BUILD_TYPE=Debug
-  - AUTOGEN=false SHARED=OFF SHARED=ON BUILD_TYPE=Release
-  - AUTOGEN=false SHARED=ON SHARED=ON BUILD_TYPE=Debug
-  - AUTOGEN=false SHARED=ON SHARED=ON BUILD_TYPE=Release
+  - AUTOGEN=true SHARED=OFF SHARED=ON
+  - AUTOGEN=false SHARED=ON SHARED=ON
 
 script:
   - if $AUTOGEN; then ./autogen.sh && ./configure && make distcheck; fi
   - mkdir build
   - cd build
-  - cmake -DBUILD_SHARED_LIBS=$SHARED -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+  - cmake -DBUILD_SHARED_LIBS=$SHARED ..
   - cat config.h
   - make
   - make test
