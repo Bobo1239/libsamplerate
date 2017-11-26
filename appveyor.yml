@@ -3,10 +3,10 @@ image:
 
 environment:
   matrix:
-    - generator: "Visual Studio 15 2017"
-      shared: "OFF"
-    - generator: "Visual Studio 15 2017"
-      shared: "ON"
+    # - generator: "Visual Studio 15 2017"
+    #   shared: "OFF"
+    # - generator: "Visual Studio 15 2017"
+    #   shared: "ON"
     - generator: "MSYS Makefiles"
       shared: "OFF"
     - generator: "MSYS Makefiles"
