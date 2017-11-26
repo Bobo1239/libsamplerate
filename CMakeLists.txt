@@ -77,3 +77,24 @@ foreach(testSrc ${TEST_SRCS})
 	endif()
 	add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSrc)
+
+set(EXAMPLE_SRCS
+	${PROJECT_SOURCE_DIR}/examples/sndfile-resample.c
+	${PROJECT_SOURCE_DIR}/examples/timewarp-file.c
+	${PROJECT_SOURCE_DIR}/examples/varispeed-play.c)
+
+foreach(exampleSrc ${EXAMPLE_SRCS})
+	get_filename_component(testName ${exampleSrc} NAME_WE)
+	add_executable(${testName}
+		${exampleSrc}
+		${PROJECT_SOURCE_DIR}/examples/audio_out.c)
+	target_link_libraries(${testName} PUBLIC samplerate)
+	if (ALSA_FOUND)
+		target_link_libraries(${testName} PUBLIC asound)
+	endif()
+	if (SNDFILE_FOUND)
+		target_link_libraries(${testName} PUBLIC sndfile)
+	endif()
+	# TODO: need this on MinGW
+	# target_link_libraries(${testName} PUBLIC winmm)
+endforeach(exampleSrc)
