@@ -13,3 +13,7 @@ script:
   - ./autogen.sh
   - ./configure
   - make distcheck
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
