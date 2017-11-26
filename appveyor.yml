@@ -1,0 +1,23 @@
+image:
+- Visual Studio 2017
+
+environment:
+  matrix:
+    - generator: "Visual Studio 15 2017"
+      shared: "OFF"
+    - generator: "Visual Studio 15 2017"
+      shared: "ON"
+    - generator: "MinGW Makefiles"
+      shared: "OFF"
+    - generator: "MinGW Makefiles"
+      shared: "ON"
+
+matrix:
+  fast_finish: true
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake -G "%generator%" -DBUILD_SHARED_LIBS=%shared% ..
+  - cat config.h
+  - cmake --build
