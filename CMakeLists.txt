@@ -41,11 +41,16 @@ include(CheckTypeSize)
 check_type_size("int" SIZEOF_INT)
 check_type_size("long" SIZEOF_LONG)
 
+find_package(ALSA)
+set(HAVE_ALSA ALSA_FOUND)
+
 find_package(Sndfile)
 set(HAVE_SNDFILE SNDFILE_FOUND)
 
 find_package(FFTW)
 set(HAVE_FFTW3 FFTW_FOUND)
+
+# TODO: check CPU_CLIPS stuff
 
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
@@ -61,15 +66,14 @@ enable_testing()
 file(GLOB TEST_SRCS ${PROJECT_SOURCE_DIR}/tests/*_test.c)
 
 foreach(testSrc ${TEST_SRCS})
-    get_filename_component(testName ${testSrc} NAME_WE)
-    add_executable(${testName}
-    	           ${testSrc}
-    	           ${PROJECT_SOURCE_DIR}/tests/util.c
-    	           ${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
-    target_link_libraries(${testName} PUBLIC samplerate m)
-    if (FFTW_FOUND)
-    	target_link_libraries(${testName} PUBLIC fftw3)
-    endif()
-    target_link_libraries(${testName} PUBLIC samplerate m)
+	get_filename_component(testName ${testSrc} NAME_WE)
+	add_executable(${testName}
+		${testSrc}
+		${PROJECT_SOURCE_DIR}/tests/util.c
+		${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
+	target_link_libraries(${testName} PUBLIC samplerate m)
+	if (FFTW_FOUND)
+		target_link_libraries(${testName} PUBLIC fftw3)
+	endif()
 	add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSrc)
