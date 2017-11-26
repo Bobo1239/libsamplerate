@@ -63,6 +63,6 @@ foreach(testSrc ${TEST_SRCS})
     	           ${testSrc}
     	           ${PROJECT_SOURCE_DIR}/tests/util.c
     	           ${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
-    target_link_libraries(${testName} PUBLIC samplerate)
+    target_link_libraries(${testName} PUBLIC samplerate m)
 	add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSrc)
