@@ -52,3 +52,17 @@ add_library(samplerate STATIC ${SAMPLERATE_SRC})
 target_include_directories(samplerate PUBLIC
 	${PROJECT_SOURCE_DIR}/src
 	${CMAKE_CURRENT_BINARY_DIR})
+
+enable_testing()
+
+file(GLOB TEST_SRCS ${PROJECT_SOURCE_DIR}/tests/*_test.c)
+
+foreach(testSrc ${TEST_SRCS})
+    get_filename_component(testName ${testSrc} NAME_WE)
+    add_executable(${testName}
+    	           ${testSrc}
+    	           ${PROJECT_SOURCE_DIR}/tests/util.c
+    	           ${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
+    target_link_libraries(${testName} PUBLIC samplerate)
+	add_test(NAME ${testName} COMMAND ${testName})
+endforeach(testSrc)
