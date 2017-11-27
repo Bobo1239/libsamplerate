@@ -114,3 +114,6 @@ foreach(exampleSrc ${EXAMPLE_SRCS})
 		target_link_libraries(${exampleName} PUBLIC winmm)
 	endif()
 endforeach(exampleSrc)
+
+install(TARGETS samplerate DESTINATION lib)
+install(FILES src/samplerate.h DESTINATION include)
