@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 3.1)
-project(libsamplerate VERSION 0.1.9 LANGUAGES C)
+cmake_minimum_required(VERSION 2.8)
+project(libsamplerate LANGUAGES C)
+set(PROJECT_VERSION "0.1.9")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
