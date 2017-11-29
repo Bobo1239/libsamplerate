@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
-project(libsamplerate C)
-set(PROJECT_VERSION "0.1.9")
+cmake_minimum_required(VERSION 3.1)
+project(libsamplerate VERSION 0.1.9 LANGUAGES C)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
@@ -87,9 +86,9 @@ foreach(testSrc ${TEST_SRCS})
 		${testSrc}
 		${PROJECT_SOURCE_DIR}/tests/util.c
 		${PROJECT_SOURCE_DIR}/tests/calc_snr.c)
-	target_link_libraries(${testName} samplerate ${CMAKE_REQUIRED_LIBRARIES})
+	target_link_libraries(${testName} PUBLIC samplerate ${CMAKE_REQUIRED_LIBRARIES})
 	if(FFTW_FOUND)
-		target_link_libraries(${testName} fftw3)
+		target_link_libraries(${testName} PUBLIC fftw3)
 	endif()
 	add_test(NAME ${testName} COMMAND ${testName})
 endforeach(testSrc)
@@ -104,15 +103,15 @@ foreach(exampleSrc ${EXAMPLE_SRCS})
 	add_executable(${exampleName}
 		${exampleSrc}
 		${PROJECT_SOURCE_DIR}/examples/audio_out.c)
-	target_link_libraries(${exampleName} samplerate ${CMAKE_REQUIRED_LIBRARIES})
+	target_link_libraries(${exampleName} PUBLIC samplerate ${CMAKE_REQUIRED_LIBRARIES})
 	if(ALSA_FOUND)
-		target_link_libraries(${exampleName} asound)
+		target_link_libraries(${exampleName} PUBLIC asound)
 	endif()
 	if(SNDFILE_FOUND)
-		target_link_libraries(${exampleName} sndfile)
+		target_link_libraries(${exampleName} PUBLIC sndfile)
 	endif()
 	if(WIN32)
-		target_link_libraries(${exampleName} winmm)
+		target_link_libraries(${exampleName} PUBLIC winmm)
 	endif()
 endforeach(exampleSrc)
 
