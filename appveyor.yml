@@ -4,23 +4,46 @@ image:
 environment:
   matrix:
     - generator: "Visual Studio 15 2017"
+      artifact: "ON"
+    - generator: "Visual Studio 15 2017"
       shared: "OFF"
+      artifact: "OFF"
     - generator: "Visual Studio 15 2017"
       shared: "ON"
+      artifact: "OFF"
     - generator: "MSYS Makefiles"
       shared: "OFF"
+      artifact: "OFF"
     - generator: "MSYS Makefiles"
       shared: "ON"
+      artifact: "OFF"
 
 matrix:
   fast_finish: true
 
 build_script:
-  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
-  - bash -lc "pacman -S --needed --noconfirm mingw-w64-x86_64-fftw mingw-w64-x86_64-libsndfile"
-  - mkdir build
-  - cd build
-  - cmake -G "%generator%" -DBUILD_SHARED_LIBS=%shared% ..
-  - cat config.h
-  - cmake --build .
-  - ctest -C "Debug"
+  - ps: |
+      if ($env:artifact -eq 'OFF')
+      {
+          $env:Path = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;" + $env:Path
+          bash -lc "pacman -S --needed --noconfirm mingw-w64-x86_64-fftw mingw-w64-x86_64-libsndfile"
+          mkdir build
+          cd build
+          cmake -G "$env:generator" -DBUILD_SHARED_LIBS=$env:shared ..
+          cat config.h
+          cmake --build .
+          ctest -C "Debug"
+      }
+      else
+      {
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 15 2017" -DBUILD_SHARED_LIBS=OFF
+          cmake --build . --config Release
+          cmake .. -G "Visual Studio 15 2017" -DBUILD_SHARED_LIBS=ON
+          cmake --build . --config Release
+          $files = "libsamplerate-0.dll","libsamplerate-0.exp","libsamplerate-0.lib","samplerate.lib"
+          $files = $files | ForEach-Object {"Release\$_"}
+          Compress-Archive -Path $files -DestinationPath artifact
+          Push-AppveyorArtifact artifact.zip
+      }
